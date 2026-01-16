@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Collections.Generic;
-
 
 namespace ArbolExpresionProyecto
 {
@@ -109,12 +111,41 @@ namespace ArbolExpresionProyecto
     {
         static void Main()
         {
-            string expresion = "(5*7)+(12/6)";
+            TcpListener servidor = new TcpListener(IPAddress.Loopback, 5000);
+            servidor.Start();
 
-            List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(expresion);
+            Console.WriteLine("Servidor iniciado en puerto 5000...");
 
-            Console.WriteLine("Postfija:");
-            Console.WriteLine(string.Join(" ", postfija));
+            while (true)
+            {
+                TcpClient cliente = servidor.AcceptTcpClient();
+                NetworkStream stream = cliente.GetStream();
+
+                byte[] buffer = new byte[1024];
+                int bytesLeidos = stream.Read(buffer, 0, buffer.Length);
+                string expresion = Encoding.UTF8.GetString(buffer, 0, bytesLeidos);
+
+                try
+                {
+                    List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(expresion);
+
+                    ArbolExpresion arbol = new ArbolExpresion();
+                    arbol.ConstruirDesdePostfija(postfija.ToArray());
+
+                    int resultado = arbol.Evaluar();
+                    string respuesta = resultado.ToString();
+
+                    byte[] datos = Encoding.UTF8.GetBytes(respuesta);
+                    stream.Write(datos, 0, datos.Length);
+                }
+                catch
+                {
+                    byte[] error = Encoding.UTF8.GetBytes("ERROR");
+                    stream.Write(error, 0, error.Length);
+                }
+
+                cliente.Close();
+            }
         }
     }
 }

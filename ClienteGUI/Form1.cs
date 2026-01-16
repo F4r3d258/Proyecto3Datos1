@@ -1,6 +1,6 @@
 using System;
-using System.Drawing;
-using System.Text.RegularExpressions;
+using System.Net.Sockets;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ClienteGUI
@@ -8,69 +8,87 @@ namespace ClienteGUI
     public partial class Form1 : Form
     {
         TextBox txtExpresion;
-        Button btnEnviar;
-        Label lblEstado;
+        Button btnCalcular;
+        Label lblResultado;
 
         public Form1()
         {
             InitializeComponent();
-            ConstruirInterfaz();
+            CrearInterfaz();
         }
 
-        private void ConstruirInterfaz()
+        private void CrearInterfaz()
         {
-            Text = "Cliente Calculadora";
-            Size = new Size(400, 200);
-            StartPosition = FormStartPosition.CenterScreen;
-
-            Label lblTitulo = new Label();
-            lblTitulo.Text = "Ingrese la expresión:";
-            lblTitulo.Location = new Point(20, 20);
-            lblTitulo.AutoSize = true;
+            this.Text = "Cliente - Evaluador";
+            this.Width = 400;
+            this.Height = 200;
 
             txtExpresion = new TextBox();
-            txtExpresion.Location = new Point(20, 45);
+            txtExpresion.Left = 20;
+            txtExpresion.Top = 20;
             txtExpresion.Width = 340;
 
-            btnEnviar = new Button();
-            btnEnviar.Text = "Enviar";
-            btnEnviar.Location = new Point(20, 80);
-            btnEnviar.Click += BtnEnviar_Click;
+            btnCalcular = new Button();
+            btnCalcular.Text = "Calcular";
+            btnCalcular.Left = 20;
+            btnCalcular.Top = 60;
+            btnCalcular.Click += BtnCalcular_Click;
 
-            lblEstado = new Label();
-            lblEstado.Text = "Estado:";
-            lblEstado.Location = new Point(20, 120);
-            lblEstado.AutoSize = true;
+            lblResultado = new Label();
+            lblResultado.Left = 20;
+            lblResultado.Top = 100;
+            lblResultado.Width = 340;
+            lblResultado.Text = "Resultado:";
 
-            Controls.Add(lblTitulo);
-            Controls.Add(txtExpresion);
-            Controls.Add(btnEnviar);
-            Controls.Add(lblEstado);
+            this.Controls.Add(txtExpresion);
+            this.Controls.Add(btnCalcular);
+            this.Controls.Add(lblResultado);
         }
 
-        private void BtnEnviar_Click(object sender, EventArgs e)
+        private void BtnCalcular_Click(object sender, EventArgs e)
         {
-            string expresion = txtExpresion.Text.Trim();
-
-            if (expresion.Length == 0)
-            {
-                lblEstado.Text = "Estado: expresión vacía";
-                return;
-            }
+            string expresion = txtExpresion.Text;
 
             if (!ExpresionValida(expresion))
             {
-                lblEstado.Text = "Estado: símbolos inválidos";
+                MessageBox.Show("La expresión contiene caracteres no válidos");
                 return;
             }
 
-            lblEstado.Text = "Estado: expresión válida";
-        }
+            try
+            {
+                TcpClient cliente = new TcpClient("127.0.0.1", 5000);
+                NetworkStream stream = cliente.GetStream();
 
-        private bool ExpresionValida(string expresion)
+                byte[] datos = Encoding.UTF8.GetBytes(expresion);
+                stream.Write(datos, 0, datos.Length);
+
+                byte[] buffer = new byte[1024];
+                int bytes = stream.Read(buffer, 0, buffer.Length);
+                string respuesta = Encoding.UTF8.GetString(buffer, 0, bytes);
+
+                lblResultado.Text = respuesta == "ERROR"
+                    ? "Resultado: Error en expresión"
+                    : "Resultado: " + respuesta;
+
+                cliente.Close();
+            }
+            catch
+            {
+                MessageBox.Show("No se pudo conectar con el servidor");
+            }
+        }
+        private bool ExpresionValida(string expr)
         {
-            string patron = @"^[0-9\s+\-*/%()&|^~]+$";
-            return Regex.IsMatch(expresion, patron);
+            string permitidos = "0123456789+-*/%()~&|^ ";
+
+            foreach (char c in expr)
+            {
+                if (!permitidos.Contains(c))
+                    return false;
+            }
+
+            return true;
         }
     }
 }
