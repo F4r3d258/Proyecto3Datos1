@@ -13,3 +13,18 @@ C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\C
 C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.pdb
 C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.genruntimeconfig.cache
 C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ref\ClienteGUI.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\bin\Debug\net10.0-windows\ClienteGUI.exe
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\bin\Debug\net10.0-windows\ClienteGUI.deps.json
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\bin\Debug\net10.0-windows\ClienteGUI.runtimeconfig.json
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\bin\Debug\net10.0-windows\ClienteGUI.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\bin\Debug\net10.0-windows\ClienteGUI.pdb
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.AssemblyInfoInputs.cache
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.AssemblyInfo.cs
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.csproj.CoreCompileInputs.cache
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.sourcelink.json
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\refint\ClienteGUI.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.pdb
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ClienteGUI.genruntimeconfig.cache
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\ClienteGUI\obj\Debug\net10.0-windows\ref\ClienteGUI.dll

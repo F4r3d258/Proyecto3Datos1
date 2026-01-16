@@ -10,6 +10,8 @@ namespace ClienteGUI
         TextBox txtExpresion;
         Button btnCalcular;
         Label lblResultado;
+        DataGridView dgvHistorial;
+        Button btnHistorial;
 
         public Form1()
         {
@@ -40,6 +42,26 @@ namespace ClienteGUI
             lblResultado.Width = 340;
             lblResultado.Text = "Resultado:";
 
+            btnHistorial = new Button();
+            btnHistorial.Text = "Ver historial";
+            btnHistorial.Left = 120;
+            btnHistorial.Top = 60;
+            btnHistorial.Click += BtnHistorial_Click;
+
+            dgvHistorial = new DataGridView();
+            dgvHistorial.Left = 20;
+            dgvHistorial.Top = 140;
+            dgvHistorial.Width = 340;
+            dgvHistorial.Height = 200;
+            dgvHistorial.ColumnCount = 3;
+            dgvHistorial.Columns[0].Name = "Fecha";
+            dgvHistorial.Columns[1].Name = "Expresión";
+            dgvHistorial.Columns[2].Name = "Resultado";
+
+            this.Height = 400;
+
+            this.Controls.Add(btnHistorial);
+            this.Controls.Add(dgvHistorial);
             this.Controls.Add(txtExpresion);
             this.Controls.Add(btnCalcular);
             this.Controls.Add(lblResultado);
@@ -90,5 +112,45 @@ namespace ClienteGUI
 
             return true;
         }
+
+        private void BtnHistorial_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                TcpClient cliente = new TcpClient("127.0.0.1", 5000);
+                NetworkStream stream = cliente.GetStream();
+
+                byte[] datos = Encoding.UTF8.GetBytes("HISTORIAL");
+                stream.Write(datos, 0, datos.Length);
+
+                byte[] buffer = new byte[8192];
+                int bytes = stream.Read(buffer, 0, buffer.Length);
+                string respuesta = Encoding.UTF8.GetString(buffer, 0, bytes);
+
+                cliente.Close();
+
+                if (respuesta == "VACIO")
+                {
+                    MessageBox.Show("No hay historial disponible");
+                    return;
+                }
+
+                dgvHistorial.Rows.Clear();
+
+                string[] lineas = respuesta.Split('\n');
+
+                for (int i = 1; i < lineas.Length; i++) // saltar encabezado
+                {
+                    if (string.IsNullOrWhiteSpace(lineas[i])) continue;
+                    string[] datosFila = lineas[i].Split(',');
+                    dgvHistorial.Rows.Add(datosFila);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error al obtener historial");
+            }
+        }
+
     }
 }

@@ -13,3 +13,18 @@ C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\P
 C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.pdb
 C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.genruntimeconfig.cache
 C:\Users\Fared\OneDrive\Desktop\semestres\Verano-1\Proyecto #3\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\ref\Proyecto3Datos1.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\bin\Debug\net10.0\Proyecto3Datos1.exe
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\bin\Debug\net10.0\Proyecto3Datos1.deps.json
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\bin\Debug\net10.0\Proyecto3Datos1.runtimeconfig.json
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\bin\Debug\net10.0\Proyecto3Datos1.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\bin\Debug\net10.0\Proyecto3Datos1.pdb
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.AssemblyInfoInputs.cache
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.AssemblyInfo.cs
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.csproj.CoreCompileInputs.cache
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.sourcelink.json
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\refint\Proyecto3Datos1.dll
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.pdb
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\Proyecto3Datos1.genruntimeconfig.cache
+C:\Users\fbarr\OneDrive\Documentos\GitHub\Proyecto3Datos1\Proyecto3Datos1\obj\Debug\net10.0\ref\Proyecto3Datos1.dll

@@ -128,6 +128,15 @@ namespace ArbolExpresionProyecto
                 byte[] buffer = new byte[1024];
                 int bytesLeidos = stream.Read(buffer, 0, buffer.Length);
                 string expresion = Encoding.UTF8.GetString(buffer, 0, bytesLeidos);
+                if (expresion == "Historial")
+                {
+                      string historial = LeerHistorial();
+                      byte[] datosHistorial = Encoding.UTF8.GetBytes(historial);
+                      stream.Write(datosHistorial, 0, datosHistorial.Length);
+                      cliente.Close();
+                      continue;
+
+                }
 
                 try
                 {
@@ -152,6 +161,15 @@ namespace ArbolExpresionProyecto
 
                 cliente.Close();
             }
+        }
+
+        static string LeerHistorial()
+        {
+            if (!File.Exists(archivoCSV))
+                return "Vacio";
+
+            return File.ReadAllText(archivoCSV);
+
         }
         static void RegistrarOperacion(string expresion, string resultado)
         {
