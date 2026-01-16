@@ -9,79 +9,68 @@ namespace ClienteGUI
     {
         TextBox txtExpresion;
         Button btnCalcular;
+        Button btnHistorial;
         Label lblResultado;
         DataGridView dgvHistorial;
-        Button btnHistorial;
 
         public Form1()
         {
-            InitializeComponent();
             CrearInterfaz();
         }
 
         private void CrearInterfaz()
         {
             this.Text = "Cliente - Evaluador";
-            this.Width = 400;
-            this.Height = 200;
+            this.Width = 600;
+            this.Height = 500;
 
             txtExpresion = new TextBox();
-            txtExpresion.Left = 20;
-            txtExpresion.Top = 20;
-            txtExpresion.Width = 340;
+            txtExpresion.SetBounds(20, 20, 540, 30);
 
             btnCalcular = new Button();
             btnCalcular.Text = "Calcular";
-            btnCalcular.Left = 20;
-            btnCalcular.Top = 60;
+            btnCalcular.SetBounds(20, 60, 120, 30);
             btnCalcular.Click += BtnCalcular_Click;
-
-            lblResultado = new Label();
-            lblResultado.Left = 20;
-            lblResultado.Top = 100;
-            lblResultado.Width = 340;
-            lblResultado.Text = "Resultado:";
 
             btnHistorial = new Button();
             btnHistorial.Text = "Ver historial";
-            btnHistorial.Left = 120;
-            btnHistorial.Top = 60;
+            btnHistorial.SetBounds(160, 60, 120, 30);
             btnHistorial.Click += BtnHistorial_Click;
 
+            lblResultado = new Label();
+            lblResultado.Text = "Resultado:";
+            lblResultado.SetBounds(20, 100, 540, 30);
+
             dgvHistorial = new DataGridView();
-            dgvHistorial.Left = 20;
-            dgvHistorial.Top = 140;
-            dgvHistorial.Width = 340;
-            dgvHistorial.Height = 200;
-            dgvHistorial.ColumnCount = 3;
-            dgvHistorial.Columns[0].Name = "Fecha";
-            dgvHistorial.Columns[1].Name = "Expresión";
-            dgvHistorial.Columns[2].Name = "Resultado";
+            dgvHistorial.SetBounds(20, 140, 540, 300);
 
-            this.Height = 400;
+            // CONFIGURACIÓN SIMPLE Y SEGURA
+            dgvHistorial.AllowUserToAddRows = false;
+            dgvHistorial.ReadOnly = true;
+            dgvHistorial.RowHeadersVisible = false;
+            dgvHistorial.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvHistorial.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvHistorial.AutoGenerateColumns = false;
 
-            this.Controls.Add(btnHistorial);
-            this.Controls.Add(dgvHistorial);
+            dgvHistorial.Columns.Add("Fecha", "Fecha");
+            dgvHistorial.Columns.Add("Expresion", "Expresión");
+            dgvHistorial.Columns.Add("Resultado", "Resultado");
+
             this.Controls.Add(txtExpresion);
             this.Controls.Add(btnCalcular);
+            this.Controls.Add(btnHistorial);
             this.Controls.Add(lblResultado);
+            this.Controls.Add(dgvHistorial);
         }
 
         private void BtnCalcular_Click(object sender, EventArgs e)
         {
-            string expresion = txtExpresion.Text;
-
-            if (!ExpresionValida(expresion))
-            {
-                MessageBox.Show("La expresión contiene caracteres no válidos");
-                return;
-            }
-
             try
             {
                 TcpClient cliente = new TcpClient("127.0.0.1", 5000);
                 NetworkStream stream = cliente.GetStream();
 
+                string expresion = txtExpresion.Text;
                 byte[] datos = Encoding.UTF8.GetBytes(expresion);
                 stream.Write(datos, 0, datos.Length);
 
@@ -89,28 +78,14 @@ namespace ClienteGUI
                 int bytes = stream.Read(buffer, 0, buffer.Length);
                 string respuesta = Encoding.UTF8.GetString(buffer, 0, bytes);
 
-                lblResultado.Text = respuesta == "ERROR"
-                    ? "Resultado: Error en expresión"
-                    : "Resultado: " + respuesta;
+                lblResultado.Text = "Resultado: " + respuesta;
 
                 cliente.Close();
             }
             catch
             {
-                MessageBox.Show("No se pudo conectar con el servidor");
+                MessageBox.Show("Error al conectar con el servidor");
             }
-        }
-        private bool ExpresionValida(string expr)
-        {
-            string permitidos = "0123456789+-*/%()~&|^ ";
-
-            foreach (char c in expr)
-            {
-                if (!permitidos.Contains(c))
-                    return false;
-            }
-
-            return true;
         }
 
         private void BtnHistorial_Click(object sender, EventArgs e)
@@ -129,21 +104,24 @@ namespace ClienteGUI
 
                 cliente.Close();
 
+                dgvHistorial.Rows.Clear();
+
                 if (respuesta == "VACIO")
                 {
-                    MessageBox.Show("No hay historial disponible");
+                    MessageBox.Show("No hay historial");
                     return;
                 }
 
-                dgvHistorial.Rows.Clear();
-
                 string[] lineas = respuesta.Split('\n');
 
-                for (int i = 1; i < lineas.Length; i++) // saltar encabezado
+                for (int i = 1; i < lineas.Length; i++)
                 {
                     if (string.IsNullOrWhiteSpace(lineas[i])) continue;
-                    string[] datosFila = lineas[i].Split(',');
-                    dgvHistorial.Rows.Add(datosFila);
+
+                    string[] columnas = lineas[i].Split(',');
+
+                    if (columnas.Length == 3)
+                        dgvHistorial.Rows.Add(columnas[0], columnas[1], columnas[2]);
                 }
             }
             catch
@@ -151,6 +129,5 @@ namespace ClienteGUI
                 MessageBox.Show("Error al obtener historial");
             }
         }
-
     }
 }

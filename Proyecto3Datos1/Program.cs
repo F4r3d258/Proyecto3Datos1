@@ -112,7 +112,9 @@ namespace ArbolExpresionProyecto
     class Program
     {
         static readonly object fileLock = new object();
-        static string archivoCSV = "registro_operaciones.csv";
+        static string archivoCSV = Path.Combine(
+            AppContext.BaseDirectory, "registro_operaciones.csv");
+
         static void Main()
         {
             TcpListener servidor = new TcpListener(IPAddress.Loopback, 5000);
@@ -125,22 +127,22 @@ namespace ArbolExpresionProyecto
                 TcpClient cliente = servidor.AcceptTcpClient();
                 NetworkStream stream = cliente.GetStream();
 
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[4096];
                 int bytesLeidos = stream.Read(buffer, 0, buffer.Length);
-                string expresion = Encoding.UTF8.GetString(buffer, 0, bytesLeidos);
-                if (expresion == "Historial")
-                {
-                      string historial = LeerHistorial();
-                      byte[] datosHistorial = Encoding.UTF8.GetBytes(historial);
-                      stream.Write(datosHistorial, 0, datosHistorial.Length);
-                      cliente.Close();
-                      continue;
+                string mensaje = Encoding.UTF8.GetString(buffer, 0, bytesLeidos).Trim();
 
+                if (mensaje.ToUpper() == "HISTORIAL")
+                {
+                    string historial = LeerHistorial();
+                    byte[] datosHistorial = Encoding.UTF8.GetBytes(historial);
+                    stream.Write(datosHistorial, 0, datosHistorial.Length);
+                    cliente.Close();
+                    continue;
                 }
 
                 try
                 {
-                    List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(expresion);
+                    List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(mensaje);
 
                     ArbolExpresion arbol = new ArbolExpresion();
                     arbol.ConstruirDesdePostfija(postfija.ToArray());
@@ -148,7 +150,7 @@ namespace ArbolExpresionProyecto
                     int resultado = arbol.Evaluar();
                     string respuesta = resultado.ToString();
 
-                    RegistrarOperacion(expresion, respuesta);
+                    RegistrarOperacion(mensaje, respuesta);
 
                     byte[] datos = Encoding.UTF8.GetBytes(respuesta);
                     stream.Write(datos, 0, datos.Length);
@@ -166,11 +168,16 @@ namespace ArbolExpresionProyecto
         static string LeerHistorial()
         {
             if (!File.Exists(archivoCSV))
-                return "Vacio";
+                return "VACIO";
 
-            return File.ReadAllText(archivoCSV);
+            string contenido = File.ReadAllText(archivoCSV);
 
+            if (contenido.Split('\n').Length <= 1)
+                return "VACIO";
+
+            return contenido;
         }
+
         static void RegistrarOperacion(string expresion, string resultado)
         {
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
