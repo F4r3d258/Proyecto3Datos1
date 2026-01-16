@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 
 namespace ArbolExpresionProyecto
 {
@@ -109,6 +111,8 @@ namespace ArbolExpresionProyecto
 
     class Program
     {
+        static readonly object fileLock = new object();
+        static string archivoCSV = "registro_operaciones.csv";
         static void Main()
         {
             TcpListener servidor = new TcpListener(IPAddress.Loopback, 5000);
@@ -135,6 +139,8 @@ namespace ArbolExpresionProyecto
                     int resultado = arbol.Evaluar();
                     string respuesta = resultado.ToString();
 
+                    RegistrarOperacion(expresion, respuesta);
+
                     byte[] datos = Encoding.UTF8.GetBytes(respuesta);
                     stream.Write(datos, 0, datos.Length);
                 }
@@ -145,6 +151,21 @@ namespace ArbolExpresionProyecto
                 }
 
                 cliente.Close();
+            }
+        }
+        static void RegistrarOperacion(string expresion, string resultado)
+        {
+            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string linea = $"{fecha},{expresion},{resultado}";
+
+            lock (fileLock)
+            {
+                if (!File.Exists(archivoCSV))
+                {
+                    File.WriteAllText(archivoCSV, "Fecha,Expresion,Resultado\n");
+                }
+
+                File.AppendAllText(archivoCSV, linea + "\n");
             }
         }
     }
