@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace ArbolExpresionProyecto
 {
     public class NodoExpresion
@@ -106,25 +107,14 @@ namespace ArbolExpresionProyecto
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            // (5 * 7) + (12 / 6)
-            string[] postfija1 = { "5", "7", "*", "12", "6", "/", "+" };
+            string expresion = "(5*7)+(12/6)";
 
-            ArbolExpresion arbol1 = new ArbolExpresion();
-            arbol1.ConstruirDesdePostfija(postfija1);
+            List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(expresion);
 
-            Console.WriteLine("Resultado 1: " + arbol1.Evaluar());
-
-            // ~(5 & 0)
-            string[] postfija2 = { "5", "0", "&", "~" };
-
-            ArbolExpresion arbol2 = new ArbolExpresion();
-            arbol2.ConstruirDesdePostfija(postfija2);
-
-            Console.WriteLine("Resultado 2: " + arbol2.Evaluar());
-
-            Console.ReadKey();
+            Console.WriteLine("Postfija:");
+            Console.WriteLine(string.Join(" ", postfija));
         }
     }
 }
