@@ -44,7 +44,6 @@ namespace ClienteGUI
             dgvHistorial = new DataGridView();
             dgvHistorial.SetBounds(20, 140, 540, 300);
 
-            // CONFIGURACIÓN SIMPLE Y SEGURA
             dgvHistorial.AllowUserToAddRows = false;
             dgvHistorial.ReadOnly = true;
             dgvHistorial.RowHeadersVisible = false;
