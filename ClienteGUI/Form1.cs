@@ -12,6 +12,7 @@ namespace ClienteGUI
         Button btnHistorial;
         Label lblResultado;
         DataGridView dgvHistorial;
+        string clienteId = Guid.NewGuid().ToString();
 
         public Form1()
         {
@@ -70,7 +71,8 @@ namespace ClienteGUI
                 NetworkStream stream = cliente.GetStream();
 
                 string expresion = txtExpresion.Text;
-                byte[] datos = Encoding.UTF8.GetBytes(expresion);
+                string mensaje = clienteId + "|" + expresion;
+                byte[] datos = Encoding.UTF8.GetBytes(mensaje);
                 stream.Write(datos, 0, datos.Length);
 
                 byte[] buffer = new byte[1024];
@@ -94,7 +96,8 @@ namespace ClienteGUI
                 TcpClient cliente = new TcpClient("127.0.0.1", 5000);
                 NetworkStream stream = cliente.GetStream();
 
-                byte[] datos = Encoding.UTF8.GetBytes("HISTORIAL");
+                string mensaje = "HISTORIAL|" + clienteId;
+                byte[] datos = Encoding.UTF8.GetBytes(mensaje);
                 stream.Write(datos, 0, datos.Length);
 
                 byte[] buffer = new byte[8192];

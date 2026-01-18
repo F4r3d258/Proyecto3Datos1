@@ -129,11 +129,14 @@ namespace ArbolExpresionProyecto
 
                 byte[] buffer = new byte[4096];
                 int bytesLeidos = stream.Read(buffer, 0, buffer.Length);
-                string mensaje = Encoding.UTF8.GetString(buffer, 0, bytesLeidos).Trim();
+                string mensajeCompleto = Encoding.UTF8.GetString(buffer, 0, bytesLeidos).Trim();
+                string[] partes = mensajeCompleto.Split('|');
 
-                if (mensaje.ToUpper() == "HISTORIAL")
+                if (partes[0] == "HISTORIAL")
                 {
-                    string historial = LeerHistorial();
+                    string clienteId = partes[1];
+                    string historial = LeerHistorial(clienteId);
+
                     byte[] datosHistorial = Encoding.UTF8.GetBytes(historial);
                     stream.Write(datosHistorial, 0, datosHistorial.Length);
                     cliente.Close();
@@ -142,7 +145,10 @@ namespace ArbolExpresionProyecto
 
                 try
                 {
-                    List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(mensaje);
+                    string clienteId = partes[0];
+                    string expresion = partes[1];
+
+                    List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(expresion);
 
                     ArbolExpresion arbol = new ArbolExpresion();
                     arbol.ConstruirDesdePostfija(postfija.ToArray());
@@ -150,7 +156,7 @@ namespace ArbolExpresionProyecto
                     int resultado = arbol.Evaluar();
                     string respuesta = resultado.ToString();
 
-                    RegistrarOperacion(mensaje, respuesta);
+                    RegistrarOperacion(clienteId, expresion, respuesta);
 
                     byte[] datos = Encoding.UTF8.GetBytes(respuesta);
                     stream.Write(datos, 0, datos.Length);
@@ -163,6 +169,27 @@ namespace ArbolExpresionProyecto
 
                 cliente.Close();
             }
+        }
+
+        static string LeerHistorial(string clienteId)
+        {
+            if (!File.Exists(archivoCSV))
+            return "VACIO";
+
+            var lineas = File.ReadAllLines(archivoCSV);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Fecha,Expresion,Resultado");
+
+            foreach (var linea in lineas)
+            {
+                var partes = linea.Split(',');
+                if (partes.Length == 4 && partes[0] == clienteId)
+                {
+                    sb.AppendLine($"{partes[1]},{partes[2]},{partes[3]}");
+                }
+            }
+
+            return sb.ToString().Split('\n').Length <= 1 ? "VACIO" : sb.ToString();
         }
 
         static string LeerHistorial()
@@ -178,10 +205,10 @@ namespace ArbolExpresionProyecto
             return contenido;
         }
 
-        static void RegistrarOperacion(string expresion, string resultado)
+        static void RegistrarOperacion(string clienteId, string expresion, string resultado)
         {
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            string linea = $"{fecha},{expresion},{resultado}";
+            string linea = $"{clienteId},{fecha},{expresion},{resultado}";
 
             lock (fileLock)
             {
