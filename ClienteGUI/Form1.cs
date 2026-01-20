@@ -12,7 +12,7 @@ namespace ClienteGUI
         Button btnHistorial;
         Label lblResultado;
         DataGridView dgvHistorial;
-        string clienteId = Guid.NewGuid().ToString();
+        string clienteId = Guid.NewGuid().ToString(); // Crea un ID único para el cliente
 
         public Form1()
         {
@@ -67,7 +67,7 @@ namespace ClienteGUI
         {
             try
             {
-                TcpClient cliente = new TcpClient("127.0.0.1", 5000);
+                TcpClient cliente = new TcpClient("127.0.0.1", 5000); // Conectar al servidor 
                 NetworkStream stream = cliente.GetStream();
 
                 string expresion = txtExpresion.Text;
