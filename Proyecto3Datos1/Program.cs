@@ -10,6 +10,8 @@ namespace ArbolExpresionProyecto
 {
     public class NodoExpresion
     {
+
+        //determina que los nodos hoja sean valores y los demás nodos operandos
         public string Valor;
         public NodoExpresion Izquierdo;
         public NodoExpresion Derecho;
@@ -50,6 +52,7 @@ namespace ArbolExpresionProyecto
                 {
                     NodoExpresion operador = new NodoExpresion(token);
 
+                    //solamente se utiliza el nodo derecho porque se refiere a la negación
                     if (token == "~")
                     {
                         operador.Derecho = pila.Pop();
@@ -109,6 +112,7 @@ namespace ArbolExpresionProyecto
         }
     }
 
+    //donde se crea el servidor
     class Program
     {
         static readonly object fileLock = new object();
@@ -132,6 +136,7 @@ namespace ArbolExpresionProyecto
                 string mensajeCompleto = Encoding.UTF8.GetString(buffer, 0, bytesLeidos).Trim();
                 string[] partes = mensajeCompleto.Split('|');
 
+                //muestra solamente el historial del usuario
                 if (partes[0] == "HISTORIAL")
                 {
                     string clienteId = partes[1];
@@ -148,6 +153,7 @@ namespace ArbolExpresionProyecto
                     string clienteId = partes[0];
                     string expresion = partes[1];
 
+                    //pasa de Infija al resultado final
                     List<string> postfija = ConvertidorPostfijo.InfijaAPostfija(expresion);
 
                     ArbolExpresion arbol = new ArbolExpresion();

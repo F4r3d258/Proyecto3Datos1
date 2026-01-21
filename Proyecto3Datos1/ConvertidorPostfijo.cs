@@ -6,6 +6,7 @@ namespace ArbolExpresionProyecto
 {
     public class ConvertidorPostfijo
     {
+        //metodo que convierte notaciones infijas a postfijas
         public static List<string> InfijaAPostfija(string expresion)
         {
             List<string> salida = new List<string>();
@@ -18,6 +19,7 @@ namespace ArbolExpresionProyecto
                 if (c == ' ')
                     continue;
 
+                //se pueden admitir numeros de más de un dígito
                 if (char.IsDigit(c))
                 {
                     StringBuilder numero = new StringBuilder();
@@ -44,6 +46,7 @@ namespace ArbolExpresionProyecto
                 {
                     string op = c.ToString();
 
+                    //se determina el doble asterisco como operador de potencia
                     if (c == '*' && i + 1 < expresion.Length && expresion[i + 1] == '*')
                     {
                         op = "**";
@@ -66,6 +69,7 @@ namespace ArbolExpresionProyecto
             return salida;
         }
 
+        //se determina la prioridad de las operaciones
         private static int Prioridad(string op)
         {
             if (op == "~") return 4;
