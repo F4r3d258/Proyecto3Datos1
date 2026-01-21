@@ -228,3 +228,8 @@ namespace ArbolExpresionProyecto
         }
     }
 }
+
+
+//Comando para incializar el servidor dotnet run --project Proyecto3Datos1/Proyecto3Datos1.csproj
+
+//Comando para incializar el cliente dotnet run --project ClienteGUI/ClienteGUI.csproj
